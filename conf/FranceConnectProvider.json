@@ -1,0 +1,15 @@
+{
+	"issuer" : "FranceConnect",
+	
+	"client_id" : "",
+	"client_secret" : "",
+	"callback" : "http://localhost:9000/callback",
+	
+	"authorization_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize",
+	"token_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/token/",
+	"userinfo_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/userinfo",
+	"logout_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/logout",
+	"checktoken_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/checktoken",
+	
+	"response_type" : "code"
+}

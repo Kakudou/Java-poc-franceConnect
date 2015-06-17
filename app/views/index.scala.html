@@ -1,0 +1,42 @@
+@(prettyPrint : String)
+
+    <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+        function OpenPopupCenter(pageURL, id, width, height) {
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 4;
+           var popup = window.open(pageURL, id, 'toolbar=no, menubar=no, scrollbars=yes,location=yes,resizable=yes, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left)
+        }
+
+        function CheckIfInPopup(){
+        	window.opener.location.href = window.opener.location.href;
+        	if (window.opener.progressWindow){
+        		window.opener.progressWindow.close()
+        		}
+        		window.close();
+        }
+
+        if (window.opener != null){
+            CheckIfInPopup();
+        }
+</script>
+
+@if(session.get("X-ACCESS-TOKEN") == null){
+	<a class="fc_popup" href="/login"><img src="@routes.Assets.at("images/logoFC.png")" alt="login"/></a>
+}else{
+	<a class="fc_popup" href ="/logout">logout</a>
+	</br>
+	connect as:
+	</br>
+	@prettyPrint
+}
+
+<script type="text/javascript">
+    $('.fc_popup').click(function(event) {
+        if ($(window).width() > 600) {
+            event.preventDefault();
+            OpenPopupCenter(this.href, "FranceConnect_Popup", 500, 600);
+        }
+    });
+</script>
