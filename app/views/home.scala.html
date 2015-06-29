@@ -1,0 +1,182 @@
+@(identitePivot : security.openIdConnect.franceConnect.IdentitePivot)
+
+@options = {
+  data-provide="datepicker"
+  data-date-autoclose="true"
+  data-date-calendar-weeks="true"
+  data-date-clear-btn="true"
+  data-date-format="DD dd MM yyyy"
+  data-date-language="fr" 
+  data-date-today-btn="linked"
+  data-date-today-highlight="true"
+}
+
+@main() {
+<script>
+document.body.style.background = "url('assets/images/images.jpg') no-repeat right bottom";
+</script>
+
+	<div class="menu">
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@routes.Application.home()">
+              <i class="glyphicon glyphicon-home"></i>
+            </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+           <!--<ul class="nav navbar-nav">
+              <li><a href="@routes.API.doc()"><span class="glyphicon glyphicon-transfer"></span> API documentation</a></li>
+            </ul>-->
+            
+             <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-text">Vous êtes: @identitePivot.getFamilyName() @identitePivot.getGivenName()</li>
+        		<li><a class="fc_popup" href="@routes.Application.logout()">Se déconnecter</a></li>
+        	</ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+      <div class ="col-md-6 form">
+      	<h3>Formulaire de recherche</h3>
+		Nom: <input type="text" id="nom_de_naissance" name="nom_de_naissance" value="" class="form-control" />
+		Prénom: <input type="text" id="prenoms" name="prenoms" value="" class="form-control" />
+		Lieu naissance: <select id="lieu_de_naissance" name="lieu_de_naissance" name="lieu_de_naissance" class="form-control" >
+		  <option value="" selected></option> 
+		  <option value="34142">34142</option>
+		  <option value="34172">34172</option>
+		  <option value="49007">49007</option>
+		  <option value="75056">75056</option>
+		  <option value="91471">91471</option>
+		  <option value="93051">93051</option>
+		  <option value="94068">94068</option>
+		</select>
+		Pays naissance: <select id="pays_de_naissance" name="pays_de_naissance" name="pays_de_naissance" class="form-control" >
+		  <option value="" selected></option> 
+		  <option value="99100">99100</option>
+		  <option value="99104">99104</option>
+		  <option value="99216">99216</option>
+		  <option value="99401">99401</option>
+		  <option value="99404">99404</option>
+		  <option value="99501">99501</option>
+		</select>
+		Sexe: <select id="sexe" name="sexe" name="select" class="form-control" >
+		  <option value="" selected></option> 
+		  <option value="female">female</option>
+		  <option value="male">male</option>
+		</select>
+		Date naissance: <div class="input-group date" id="date-dp" @options>
+		    <input type="text" class="form-control" value="" autocomplete="off">
+		    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+		  </div>
+		  <input type="hidden" id="date" name="date" value="">
+		
+		  <script type="text/javascript">
+		    $(document).ready(function() {
+		      $('#date-dp').on('changeDate', function(e){
+		        $('#date').val(e.format('yyyy-mm-dd'));
+		      });
+		    });
+		  </script>
+      	<a class="formsub btn btn-success" onclick="javascript:get_results();">Rechercher</a>
+      </div>
+		
+		
+		
+		
+		
+      
+      
+     
+    
+      <div class ="col-md-6 result">
+      	<h3>Résultats de recherche</h3>
+      	    <div id="content"></div>
+      </div>
+      
+          <script type="text/javascript">
+        
+		var getQuery = function(){ 
+	        var query ="";
+	        
+	        var nom_de_naissance = document.getElementById("nom_de_naissance").value;
+			var lieu_de_naissance = $("#lieu_de_naissance").val();
+			var pays_de_naissance = $("#pays_de_naissance").val();
+			var sexe = $("#sexe").val();
+			var prenoms = document.getElementById("prenoms").value;
+			var date_de_naissance = document.getElementById("date").value;
+			
+			if(nom_de_naissance != ""){
+				query += "nom_de_naissance:"+nom_de_naissance;
+				query += " AND ";
+			}
+			if(lieu_de_naissance != ""){
+			  query += "lieu_de_naissance:"+lieu_de_naissance;
+			  query += " AND ";
+			}
+			if(pays_de_naissance != ""){
+			  query += "pays_de_naissance:"+pays_de_naissance;
+			  query += " AND ";
+			}
+			if(sexe != ""){
+			  query += "sexe:"+sexe;
+			  query += " AND ";
+			}
+			if(prenoms != ""){
+			  query += "prenoms:"+prenoms;
+			  query += " AND ";
+			}
+			if(date_de_naissance != ""){
+			  query += "date_de_naissance:"+date_de_naissance;
+			  query += " AND ";
+			}
+	        return query.substring(0, query.length-5);  
+        };
+        
+          
+          
+    	var get_results = function() {       
+        $.ajax({
+            url: 'http://localhost:9000/api/checkSituations?query='+getQuery()+'&TOKEN=@session.get("X-ACCESS-TOKEN")',
+            processData:false,
+            type: 'GET',
+            beforeSend:function(jqXHR, settings){                   
+                jqXHR.setRequestHeader("Content-Type", "application/json");                 
+            },
+            success: function(data, textStatus, jqXHR){                 
+                process_result(data);   
+            },
+            error: function(jqXHR, textStatus, errorThrown){ 
+            	var contentDiv=$("div#content");    
+            	contentDiv.empty();   
+            	contentDiv.append("<p> erreur 500, perte de la connection FC.</p>");      
+            },
+            complete: function(jqXHR,textStatus){                   
+            }   
+        });
+    };
+
+    var process_result = function(data){   
+        var contentDiv=$("div#content");
+        contentDiv.empty();
+        if(typeof data.error == "undefined"){
+                contentDiv.append("<ul>");            
+        		$.each(data.records,function(i,records){
+            		contentDiv.append("<li>"+records.fields.nom_de_naissance+" "+records.fields.prenoms+" "+records.fields.clair_situation +"</li>");
+            	});
+        		contentDiv.append("</ul>");   
+        }else{
+          contentDiv.append("<p>" + data.error + "</p>");
+        }
+                      
+    };
+    </script>
+
+}
+

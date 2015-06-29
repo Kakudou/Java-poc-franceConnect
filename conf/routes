@@ -3,11 +3,16 @@
 # ~~~~
 
 # Home page
-GET   /               controllers.Application.index()
-GET   /login          controllers.Application.login()
-GET   /callback       controllers.Application.callback(error ?= null, state ?= null, code ?= null)
-GET   /search         controllers.Application.search(prenoms ?= null )
-GET   /logout         controllers.Application.logout()
+GET   /                      controllers.Application.index()
+GET   /home                  controllers.Application.home()
+GET   /login                 controllers.Application.login()
+GET   /callback              controllers.Application.callback(error ?= null, state ?= null, code ?= null)
+GET   /logout                controllers.Application.logout()
+
+#API
+GET   /api/doc               controllers.API.doc()
+GET   /api/checkSituation    controllers.API.checkSituation( TOKEN ?= null)
+GET   /api/checkSituations   controllers.API.checkSituations( TOKEN ?= null, query?=null)
 
 # Map static resources from the /public folder to the /assets URL path
-GET   /assets/*file   controllers.Assets.at(path="/public", file)
+GET   /assets/*file          controllers.Assets.at(path="/public", file)

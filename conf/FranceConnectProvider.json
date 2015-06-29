@@ -1,8 +1,8 @@
 {
 	"issuer" : "FranceConnect",
 	
-	"client_id" : "",
-	"client_secret" : "",
+	"client_id" : "monClientId",
+	"client_secret" : "monClienSecret",
 	"callback" : "http://localhost:9000/callback",
 	
 	"authorization_endpoint" : "https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize",

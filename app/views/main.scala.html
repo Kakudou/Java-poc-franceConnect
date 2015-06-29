@@ -1,0 +1,7 @@
+@(title: String = "", moreStyles: Html = Html(""), moreScripts: Html = Html(""), header: Html = Html(""))(content: Html)
+
+@base(title = title) {
+  <div class="container-fluid scrollable-content" id="scrollable-content" data-spy="scroll" data-target=".scrollspy-nav">
+    @content
+  </div>
+}

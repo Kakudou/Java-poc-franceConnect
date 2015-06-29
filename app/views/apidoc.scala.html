@@ -1,0 +1,27 @@
+@()
+
+@main() {
+	<div class="menu">
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@routes.Application.home()">
+              <i class="glyphicon glyphicon-home"></i>
+            </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="@routes.API.doc()"><span class="glyphicon glyphicon-transfer"></span> API documentation</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+   
+}
+
